@@ -4,882 +4,339 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Weather Station - Project Presentation</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-dark: #090d16;
-      --card-bg: #111827;
-      --card-border: rgba(255, 255, 255, 0.08);
-      --accent-teal: #14b8a6;
-      --accent-coral: #f97316;
-      --accent-cyan: #38bdf8;
-      --accent-gold: #f59e0b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-main);
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #e2e8f0;
+      color: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px 16px;
-      background-image: 
-        radial-gradient(circle at 15% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(249, 115, 22, 0.08) 0%, transparent 40%);
+      padding: 30px 15px;
+      gap: 30px;
     }
-
-    /* Fixed Controls Navbar */
-    .nav-bar {
+    .controls {
       position: sticky;
-      top: 16px;
-      z-index: 1000;
-      background: rgba(17, 24, 39, 0.85);
-      backdrop-filter: blur(14px);
-      border: 1px solid var(--card-border);
-      border-radius: 999px;
-      padding: 8px 18px;
+      top: 15px;
+      z-index: 100;
+      background: white;
+      padding: 10px 20px;
+      border-radius: 30px;
       display: flex;
+      gap: 15px;
       align-items: center;
-      gap: 14px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      margin-bottom: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
     .btn {
-      background: var(--accent-teal);
-      color: #042f2e;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-    .btn:hover {
-      background: #2dd4bf;
-      transform: translateY(-1px);
-    }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.07);
-      color: var(--text-main);
-      border: 1px solid var(--card-border);
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
+      background: #1e40af;
       color: white;
-    }
-    .slide-counter {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: var(--text-muted);
-      padding: 0 4px;
-    }
-
-    /* Presentation Slide Container */
-    .deck-container {
-      width: 100%;
-      max-width: 1140px;
-      display: flex;
-      flex-direction: column;
-      gap: 36px;
-    }
-
-    .slide {
-      background: #0f172a;
-      border: 1px solid var(--card-border);
+      text-decoration: none;
+      padding: 8px 16px;
       border-radius: 20px;
-      min-height: 640px;
-      padding: 44px 54px;
-      position: relative;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: #1d4ed8; }
+    .btn-secondary { background: #475569; }
+    .btn-secondary:hover { background: #334155; }
+
+    /* Exact 16:9 Slide Dimensions */
+    .slide {
+      width: 1060px;
+      height: 596px;
+      background: white;
+      padding: 40px 60px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      overflow: hidden;
-    }
-    .slide::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--accent-teal), var(--accent-cyan), var(--accent-coral));
+      justify-content: flex-start;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-    /* Header Structure */
-    .slide-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 24px;
-    }
-    .dept-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(20, 184, 166, 0.1);
-      border: 1px solid rgba(20, 184, 166, 0.25);
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--accent-teal);
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-    }
     .slide-title {
-      font-size: 30px;
-      font-weight: 800;
-      color: var(--text-main);
-      letter-spacing: -0.5px;
-    }
-    .slide-index {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.05);
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--card-border);
-    }
-
-    /* Content Layouts */
-    .slide-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 18px;
-      margin: 10px 0;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    /* Aesthetic Cards */
-    .card {
-      background: rgba(30, 41, 59, 0.6);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 22px;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-    .card-glow-teal { border-left: 3px solid var(--accent-teal); }
-    .card-glow-coral { border-left: 3px solid var(--accent-coral); }
-    .card-glow-cyan { border-left: 3px solid var(--accent-cyan); }
-    .card-glow-gold { border-left: 3px solid var(--accent-gold); }
-
-    .card-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .card-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 8px;
-    }
-    .card-desc {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* Bullet Items */
-    .bullet-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      background: rgba(30, 41, 59, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 16px 20px;
-      border-radius: 12px;
-    }
-    .bullet-icon {
-      color: var(--accent-teal);
-      font-size: 18px;
-      margin-top: -2px;
-    }
-    .bullet-content h4 {
-      font-size: 15px;
-      color: var(--text-main);
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
-    .bullet-content p {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* Telemetry Metric Cards */
-    .metric-card {
-      background: rgba(30, 41, 59, 0.7);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 20px;
-      text-align: left;
-    }
-    .metric-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 1px;
+      font-size: 32px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 35px;
       text-transform: uppercase;
-    }
-    .metric-value {
-      font-size: 38px;
-      font-weight: 800;
-      margin: 8px 0 4px;
-      letter-spacing: -1px;
-    }
-    .metric-sub {
-      font-size: 12px;
-      color: var(--text-muted);
+      letter-spacing: 0.5px;
     }
 
-    /* Tables */
-    .table-container {
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      overflow: hidden;
+    .slide-content {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #111;
     }
-    table {
+
+    ul.clean-list {
+      list-style-type: disc;
+      padding-left: 30px;
+    }
+    ul.clean-list li {
+      margin-bottom: 18px;
+    }
+
+    .table-style {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13.5px;
+      margin-top: 15px;
+      font-size: 15px;
     }
-    th {
-      background: rgba(30, 41, 59, 0.9);
-      color: var(--accent-cyan);
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
+    .table-style th {
+      background: #4682b4;
+      color: white;
+      padding: 10px 14px;
       text-align: left;
-      padding: 12px 18px;
-      border-bottom: 1px solid var(--card-border);
+      font-weight: bold;
     }
-    td {
-      padding: 12px 18px;
-      color: var(--text-muted);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    .table-style td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #cbd5e1;
     }
-    tr:last-child td { border-bottom: none; }
-    td strong { color: var(--text-main); }
-
-    /* Footer */
-    .slide-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 14px;
-      font-size: 12px;
-      color: #64748b;
-      font-family: 'JetBrains Mono', monospace;
+    .table-style tr:nth-child(even) td {
+      background: #f1f5f9;
     }
 
-    /* Print to PDF */
     @media print {
-      body {
-        background: #0f172a;
-        padding: 0;
-      }
-      .nav-bar { display: none; }
-      .deck-container { gap: 0; max-width: 100%; }
+      body { background: white; padding: 0; gap: 0; }
+      .controls { display: none; }
       .slide {
-        page-break-after: always;
-        border-radius: 0;
         box-shadow: none;
-        border: none;
-        min-height: 100vh;
+        page-break-after: always;
         width: 100%;
+        height: 100vh;
+        padding: 50px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Controls Bar -->
-  <nav class="nav-bar">
-    <a href="Smart_Weather_Station_Aesthetic.pptx" download class="btn">
-      📥 Download Aesthetic PPTX
-    </a>
-    <button onclick="window.print()" class="btn btn-secondary">
-      🖨️ Save as PDF
-    </button>
-    <a href="https://smart-weather-station.vercel.app/" target="_blank" class="btn btn-secondary">
-      🌐 Live Dashboard
-    </a>
-    <span class="slide-counter">10 Slides • 16:9 HD</span>
-  </nav>
+  <div class="controls">
+    <a href="Smart_Weather_Station_Simple.pptx" download class="btn">📥 Download PowerPoint (.pptx)</a>
+    <button onclick="window.print()" class="btn btn-secondary">🖨️ Save as PDF</button>
+    <a href="https://smart-weather-station.vercel.app/" target="_blank" class="btn btn-secondary">🌐 Open Website</a>
+  </div>
 
-  <div class="deck-container">
+  <!-- SLIDE 1 -->
+  <div class="slide" style="justify-content: space-between;">
+    <div style="text-align: center;">
+      <h2 style="font-family: 'Times New Roman', serif; font-size: 24px; font-weight: bold;">
+        Galgotias College of Engineering & Technology,<br>Greater Noida
+      </h2>
+      <h3 style="font-family: 'Times New Roman', serif; font-size: 15px; font-weight: bold; margin-top: 10px;">
+        DEPARTMENT OF ELECTRONIC AND COMMUNICATION ENGINEERING
+      </h3>
+    </div>
 
-    <!-- SLIDE 1: HERO TITLE -->
-    <section class="slide" id="slide-1">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">GCET  •  DEPARTMENT OF ELECTRONICS & COMMUNICATION ENGINEERING</span>
-          <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Galgotias College of Engineering and Technology, Greater Noida</p>
-        </div>
-        <span class="slide-index">01 / 10</span>
-      </div>
+    <div style="text-align: center; margin: 40px 0;">
+      <h1 style="font-size: 38px; font-weight: bold;">Smart Weather Station</h1>
+      <p style="font-size: 19px; color: #444; margin-top: 8px;">Using ESP32, DHT22 Sensor and Cloud Dashboard</p>
+    </div>
 
-      <div class="slide-body" style="text-align: center; align-items: center; padding: 20px 0;">
-        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 6px 14px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-cyan); margin-bottom: 12px;">
-          <span style="display:inline-block; width:6px; height:6px; background:var(--accent-cyan); border-radius:50%;"></span>
-          INTERNET OF THINGS  •  EMBEDDED EDGE TELEMETRY
-        </div>
-        <h1 style="font-size: 52px; font-weight: 800; color: var(--text-main); letter-spacing: -1.5px; line-height: 1.1;">
-          Smart Weather Station
-        </h1>
-        <p style="font-size: 20px; color: var(--accent-teal); font-weight: 500; margin-top: 12px; max-width: 780px;">
-          Autonomous Microclimate Monitoring with ESP32, DHT22, SSD1306 & Real-Time Cloud Analytics
-        </p>
-      </div>
-
-      <div class="grid-2" style="background: rgba(30, 41, 59, 0.5); padding: 20px 28px; border-radius: 14px; border: 1px solid var(--card-border);">
-        <div>
-          <span style="font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-coral); font-weight: 700;">PROJECT MENTOR</span>
-          <h3 style="font-size: 17px; margin-top: 4px; color: var(--text-main);">[Faculty Mentor Name]</h3>
-          <p style="font-size: 12.5px; color: var(--text-muted);">Department of ECE, Galgotias College</p>
-        </div>
-        <div>
-          <span style="font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-teal); font-weight: 700;">PRESENTED BY</span>
-          <p style="font-size: 13.5px; color: var(--text-main); margin-top: 4px;">1. <strong>Prasoon</strong> (Roll No: _______________)</p>
-          <p style="font-size: 13.5px; color: var(--text-muted);">2. Team Member 2 (Roll No: _______________)</p>
-          <p style="font-size: 13.5px; color: var(--text-muted);">3. Team Member 3 (Roll No: _______________)</p>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>B.Tech ECE Final / Capstone Evaluation</span>
-        <span>smart-weather-station.vercel.app</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 2: CONTENTS -->
-    <section class="slide" id="slide-2">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">EXECUTIVE SUMMARY</span>
-          <h2 class="slide-title">Table of Contents</h2>
-        </div>
-        <span class="slide-index">02 / 10</span>
-      </div>
-
-      <div class="slide-body">
-        <div class="grid-4">
-          <div class="card card-glow-teal">
-            <div class="card-num" style="color: var(--accent-teal);">01</div>
-            <div class="card-title">Introduction</div>
-            <div class="card-desc">Need for localized weather tracking and IoT microclimates.</div>
-          </div>
-          <div class="card card-glow-coral">
-            <div class="card-num" style="color: var(--accent-coral);">02</div>
-            <div class="card-title">Motivation</div>
-            <div class="card-desc">Limitations of legacy weather loggers and thermal comfort need.</div>
-          </div>
-          <div class="card card-glow-cyan">
-            <div class="card-num" style="color: var(--accent-cyan);">03</div>
-            <div class="card-title">Objectives</div>
-            <div class="card-desc">System design targets, sensor precision, and cloud streaming.</div>
-          </div>
-          <div class="card card-glow-gold">
-            <div class="card-num" style="color: var(--accent-gold);">04</div>
-            <div class="card-title">Hardware</div>
-            <div class="card-desc">ESP32 pin mapping, DHT22 sensor, and SSD1306 OLED display.</div>
-          </div>
-          <div class="card card-glow-teal">
-            <div class="card-num" style="color: var(--accent-teal);">05</div>
-            <div class="card-title">Cloud Stack</div>
-            <div class="card-desc">ThingSpeak IoT REST API and zero-dependency Vercel frontend.</div>
-          </div>
-          <div class="card card-glow-coral">
-            <div class="card-num" style="color: var(--accent-coral);">06</div>
-            <div class="card-title">Results</div>
-            <div class="card-desc">Real-world live sensor validation and 24-hr canvas spline plot.</div>
-          </div>
-          <div class="card card-glow-cyan">
-            <div class="card-num" style="color: var(--accent-cyan);">07</div>
-            <div class="card-title">Future Scope</div>
-            <div class="card-desc">Solar power harvesting, multi-sensor addons, and alert webhooks.</div>
-          </div>
-          <div class="card card-glow-gold">
-            <div class="card-num" style="color: var(--accent-gold);">08</div>
-            <div class="card-title">References</div>
-            <div class="card-desc">IEEE research papers and component technical datasheets.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>Galgotias College of Engineering & Technology</span>
-        <span>Smart Weather Station</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 3: INTRODUCTION -->
-    <section class="slide" id="slide-3">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">BACKGROUND & PROBLEM STATEMENT</span>
-          <h2 class="slide-title">Introduction & Context</h2>
-        </div>
-        <span class="slide-index">03 / 10</span>
-      </div>
-
-      <div class="slide-body">
-        <div class="grid-2">
-          <div class="bullet-row" style="border-left: 3px solid var(--accent-coral);">
-            <div class="bullet-icon">📍</div>
-            <div class="bullet-content">
-              <h4>The Microclimate Problem</h4>
-              <p>Standard meteorological stations are situated tens of kilometers apart at regional airports, failing to reflect microclimates inside urban canyons, agricultural greenhouses, server rooms, and smart buildings.</p>
-            </div>
-          </div>
-          <div class="bullet-row" style="border-left: 3px solid var(--accent-gold);">
-            <div class="bullet-icon">⚠️</div>
-            <div class="bullet-content">
-              <h4>Limitations of Conventional Stations</h4>
-              <p>Commercial meteorological equipment is bulky, cost-prohibitive ($1,000+), requires manual maintenance, and lacks real-time cloud data pipelines for instant mobile/desktop visualization.</p>
-            </div>
-          </div>
-          <div class="bullet-row" style="border-left: 3px solid var(--accent-teal);">
-            <div class="bullet-icon">⚡</div>
-            <div class="bullet-content">
-              <h4>The IoT Embedded Solution</h4>
-              <p>By leveraging the dual-core ESP32 microcontroller with built-in Wi-Fi and high-precision DHT22 capacitive sensors, we establish an autonomous sensing station operating under $15.</p>
-            </div>
-          </div>
-          <div class="bullet-row" style="border-left: 3px solid var(--accent-cyan);">
-            <div class="bullet-icon">🌐</div>
-            <div class="bullet-content">
-              <h4>Edge + Cloud Synergy</h4>
-              <p>Local I2C OLED display guarantees zero-latency visual feedback on-site even when offline, while ThingSpeak and Vercel deliver global, web-accessible telemetry to any connected device.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>Galgotias College of Engineering & Technology</span>
-        <span>Smart Weather Station</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 4: OBJECTIVES -->
-    <section class="slide" id="slide-4">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">SYSTEM GOALS</span>
-          <h2 class="slide-title">Design & Engineering Objectives</h2>
-        </div>
-        <span class="slide-index">04 / 10</span>
-      </div>
-
-      <div class="slide-body">
-        <div class="grid-3">
-          <div class="card card-glow-teal">
-            <div class="card-title">1. Precision Edge Sensing</div>
-            <div class="card-desc">Interface the DHT22 (AM2302) sensor to acquire real-time atmospheric temperature (±0.5°C) and relative humidity (±2%) with high digital noise immunity.</div>
-          </div>
-          <div class="card card-glow-cyan">
-            <div class="card-title">2. Edge Comfort Math</div>
-            <div class="card-desc">Compute secondary physiological metrics directly in firmware: Heat Index (Steadman equation) and Dew Point (Magnus equation) for thermal safety assessment.</div>
-          </div>
-          <div class="card card-glow-coral">
-            <div class="card-title">3. Local OLED Telemetry</div>
-            <div class="card-desc">Establish 400kHz I2C bus communication with an SSD1306 0.96" OLED screen for instant local readout and Wi-Fi link diagnosis.</div>
-          </div>
-          <div class="card card-glow-gold">
-            <div class="card-title">4. Cloud Telemetry Ingest</div>
-            <div class="card-desc">Construct a 4-field RESTful HTTP POST pipeline streaming live telemetry to MathWorks ThingSpeak IoT Cloud every 20 seconds.</div>
-          </div>
-          <div class="card card-glow-teal">
-            <div class="card-title">5. Zero-Dependency Web UI</div>
-            <div class="card-desc">Architect a clean vanilla web dashboard (HTML5 / CSS3 / ES6) with custom HTML5 Canvas dual-trace historical trend charts.</div>
-          </div>
-          <div class="card card-glow-cyan">
-            <div class="card-title">6. Serverless Cloud Host</div>
-            <div class="card-desc">Deploy continuously via Vercel edge infrastructure and open-source all firmware and dashboard assets on GitHub.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>Galgotias College of Engineering & Technology</span>
-        <span>Smart Weather Station</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 5: HARDWARE ARCHITECTURE -->
-    <section class="slide" id="slide-5">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">HARDWARE IMPLEMENTATION</span>
-          <h2 class="slide-title">Hardware Architecture & Interfacing</h2>
-        </div>
-        <span class="slide-index">05 / 10</span>
-      </div>
-
-      <div class="slide-body">
-        <div class="grid-3" style="margin-bottom: 8px;">
-          <div class="card card-glow-teal">
-            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--accent-teal); font-weight:700;">CONTROLLER</span>
-            <div class="card-title" style="margin-top:4px;">ESP32 DevKit V1</div>
-            <div class="card-desc">
-              • 32-bit Tensilica Dual-Core @ 240MHz<br>
-              • 2.4 GHz 802.11 b/g/n Wi-Fi + BLE<br>
-              • 520 KB SRAM & 4MB Flash<br>
-              • Low-power standby cycling
-            </div>
-          </div>
-          <div class="card card-glow-coral">
-            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--accent-coral); font-weight:700;">SENSOR</span>
-            <div class="card-title" style="margin-top:4px;">DHT22 (AM2302)</div>
-            <div class="card-desc">
-              • Temp: -40 to 80°C (±0.5°C accuracy)<br>
-              • Humidity: 0 to 100% RH (±2% accuracy)<br>
-              • Digital 1-wire communication (GPIO 4)<br>
-              • Long-term signal stability
-            </div>
-          </div>
-          <div class="card card-glow-cyan">
-            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--accent-cyan); font-weight:700;">DISPLAY</span>
-            <div class="card-title" style="margin-top:4px;">SSD1306 0.96" OLED</div>
-            <div class="card-desc">
-              • 128x64 Monochrome Pixel Matrix<br>
-              • I2C Interface: SDA (21), SCL (22)<br>
-              • High contrast ratio (self-emitting)<br>
-              • Power consumption ~0.08W
-            </div>
-          </div>
-        </div>
-
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Pinout Connection</th>
-                <th>Source Pin</th>
-                <th>ESP32 GPIO</th>
-                <th>Signal Specification</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>DHT22 Data Line</strong></td>
-                <td>DHT22 Out</td>
-                <td><strong>GPIO 4</strong></td>
-                <td>Single-wire digital bidirectional pulse stream (10kΩ pull-up)</td>
-              </tr>
-              <tr>
-                <td><strong>OLED I2C Data</strong></td>
-                <td>SSD1306 SDA</td>
-                <td><strong>GPIO 21</strong></td>
-                <td>Hardware I2C Data Line (400 kHz fast mode)</td>
-              </tr>
-              <tr>
-                <td><strong>OLED I2C Clock</strong></td>
-                <td>SSD1306 SCL</td>
-                <td><strong>GPIO 22</strong></td>
-                <td>Hardware I2C Clock Line</td>
-              </tr>
-              <tr>
-                <td><strong>System Power Supply</strong></td>
-                <td>Micro-USB VIN</td>
-                <td><strong>VIN / 3.3V</strong></td>
-                <td>Regulated 3.3V output powering sensor and OLED module</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>Galgotias College of Engineering & Technology</span>
-        <span>Smart Weather Station</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 6: SOFTWARE & CLOUD PIPELINE -->
-    <section class="slide" id="slide-6">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">DATA PIPELINE</span>
-          <h2 class="slide-title">Software, Cloud & Dashboard Stack</h2>
-        </div>
-        <span class="slide-index">06 / 10</span>
-      </div>
-
-      <div class="slide-body">
-        <div class="grid-4">
-          <div class="card card-glow-teal">
-            <div class="card-num" style="color:var(--accent-teal); font-size:14px;">PHASE 1</div>
-            <div class="card-title">Sensor Sampling</div>
-            <div class="card-desc">
-              ESP32 firmware reads the DHT22 pulse train every 2 seconds. Verifies checksum to discard noisy readouts.
-            </div>
-          </div>
-          <div class="card card-glow-cyan">
-            <div class="card-num" style="color:var(--accent-cyan); font-size:14px;">PHASE 2</div>
-            <div class="card-title">Edge Mathematics</div>
-            <div class="card-desc">
-              Computes Heat Index and Dew Point on-chip. Renders instantaneous telemetry on SSD1306 OLED via I2C.
-            </div>
-          </div>
-          <div class="card card-glow-gold">
-            <div class="card-num" style="color:var(--accent-gold); font-size:14px;">PHASE 3</div>
-            <div class="card-title">ThingSpeak Cloud</div>
-            <div class="card-desc">
-              Every 20 seconds, ESP32 transmits a JSON payload to MathWorks ThingSpeak Channel 3531601 across 4 data fields.
-            </div>
-          </div>
-          <div class="card card-glow-coral">
-            <div class="card-num" style="color:var(--accent-coral); font-size:14px;">PHASE 4</div>
-            <div class="card-title">Vercel Web App</div>
-            <div class="card-desc">
-              Static dashboard pulls latest 48 feeds, recalculates Min/Max extremes, and plots 24-hr canvas graphs.
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 6px; background: rgba(30, 41, 59, 0.4); border-left: 3px solid var(--accent-cyan);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="color:var(--accent-cyan);">ThingSpeak Cloud Channel ID:</strong> <code>3531601</code> &nbsp;|&nbsp; 
-              <strong style="color:var(--accent-teal);">Field 1:</strong> Temperature (°C) &nbsp;|&nbsp; 
-              <strong style="color:var(--accent-teal);">Field 2:</strong> Humidity (%) &nbsp;|&nbsp; 
-              <strong style="color:var(--accent-teal);">Field 3:</strong> Heat Index (°C) &nbsp;|&nbsp; 
-              <strong style="color:var(--accent-teal);">Field 4:</strong> Dew Point (°C)
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>Galgotias College of Engineering & Technology</span>
-        <span>Smart Weather Station</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 7: RESULTS & LIVE VERIFICATION -->
-    <section class="slide" id="slide-7">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">VERIFICATION & BENCHMARKS</span>
-          <h2 class="slide-title">Results & Real-Time Performance</h2>
-        </div>
-        <span class="slide-index">07 / 10</span>
-      </div>
-
-      <div class="slide-body">
-        <div class="grid-2">
-          <!-- Left: 4 Metric Cards -->
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-            <div class="metric-card" style="border-top:3px solid var(--accent-coral);">
-              <span class="metric-label">TEMPERATURE</span>
-              <div class="metric-value" style="color:var(--accent-coral);">26.8<span style="font-size:20px; font-weight:400; color:var(--text-muted);">°C</span></div>
-              <span class="metric-sub">DHT22 Precision Reading</span>
-            </div>
-            <div class="metric-card" style="border-top:3px solid var(--accent-teal);">
-              <span class="metric-label">HUMIDITY</span>
-              <div class="metric-value" style="color:var(--accent-teal);">69.8<span style="font-size:20px; font-weight:400; color:var(--text-muted);">%</span></div>
-              <span class="metric-sub">Calibrated Relative Moisture</span>
-            </div>
-            <div class="metric-card" style="border-top:3px solid var(--accent-gold);">
-              <span class="metric-label">HEAT INDEX</span>
-              <div class="metric-value" style="color:var(--accent-gold);">28.5<span style="font-size:20px; font-weight:400; color:var(--text-muted);">°C</span></div>
-              <span class="metric-sub">Perceived Human Sensation</span>
-            </div>
-            <div class="metric-card" style="border-top:3px solid var(--accent-cyan);">
-              <span class="metric-label">DEW POINT</span>
-              <div class="metric-value" style="color:var(--accent-cyan);">20.8<span style="font-size:20px; font-weight:400; color:var(--text-muted);">°C</span></div>
-              <span class="metric-sub">Atmospheric Condensation</span>
-            </div>
-          </div>
-
-          <!-- Right: Verification Card -->
-          <div class="card card-glow-teal" style="display:flex; flex-direction:column; justify-content:center;">
-            <div class="card-title" style="color:var(--accent-teal); font-size:19px;">Live System Validation</div>
-            <div class="card-desc" style="font-size:14px; line-height:1.7;">
-              ✔ <strong>Zero-Lag Local Readout:</strong> SSD1306 updates instantly with internal time-stamping.<br>
-              ✔ <strong>Reliable Cloud Sync:</strong> Uploads every 20s to ThingSpeak with over 60+ verified feeds.<br>
-              ✔ <strong>24-Hour HTML5 Canvas Graph:</strong> Dual-trace bezier curves plotting temperature in coral and humidity in teal.<br>
-              ✔ <strong>Session Extremes:</strong> Live calculation of daily minimum and maximum readings.<br>
-              ✔ <strong>Fail-Safe Disconnect Alert:</strong> Visual "ESP32 offline" warning if Wi-Fi or sensor drops.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>Galgotias College of Engineering & Technology</span>
-        <span>smart-weather-station.vercel.app</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 8: CONCLUSION & FUTURE SCOPE -->
-    <section class="slide" id="slide-8">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">EVALUATION & ROADMAP</span>
-          <h2 class="slide-title">Conclusion & Future Scope</h2>
-        </div>
-        <span class="slide-index">08 / 10</span>
-      </div>
-
-      <div class="slide-body">
-        <div class="grid-2">
-          <div class="card card-glow-cyan">
-            <div class="card-title" style="color:var(--accent-cyan); font-size:18px;">PROJECT CONCLUSION</div>
-            <div class="card-desc" style="font-size:14px; line-height:1.7;">
-              • <strong>End-to-End IoT Deployment:</strong> Successfully demonstrated a complete embedded pipeline bridging hardware sensing with worldwide web presentation.<br><br>
-              • <strong>High Reliability:</strong> The DHT22 and ESP32 pair provided stable, noise-free environmental data acquisition under varying room conditions.<br><br>
-              • <strong>Zero-Dependency Performance:</strong> Clean vanilla JavaScript web dashboard guarantees blazing-fast page loads without heavy framework overhead.
-            </div>
-          </div>
-          <div class="card card-glow-coral">
-            <div class="card-title" style="color:var(--accent-coral); font-size:18px;">FUTURE INNOVATIONS</div>
-            <div class="card-desc" style="font-size:14px; line-height:1.7;">
-              ★ <strong>Multi-Sensor Expansion:</strong> Add BMP280 for barometric pressure/altitude, MQ-135 for air quality (AQI), and an optical rain tipping bucket.<br><br>
-              ★ <strong>Solar Energy Autonomy:</strong> Integrate a 5V solar panel with TP4056 lithium battery charger and ESP32 deep-sleep for 100% off-grid operation.<br><br>
-              ★ <strong>Automated Push Alerts:</strong> Trigger Telegram / WhatsApp / SMS notifications via Webhooks when temperature exceeds safety thresholds.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>Galgotias College of Engineering & Technology</span>
-        <span>Smart Weather Station</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 9: REFERENCES -->
-    <section class="slide" id="slide-9">
-      <div class="slide-header">
-        <div>
-          <span class="dept-badge">ACADEMIC & TECHNICAL SOURCES</span>
-          <h2 class="slide-title">References & Technical Standards</h2>
-        </div>
-        <span class="slide-index">09 / 10</span>
-      </div>
-
-      <div class="slide-body">
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th style="width:70px;">S. No.</th>
-                <th>Author / Organization</th>
-                <th>Reference Publication / Standard</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="text-align:center; font-family:'JetBrains Mono',monospace;">[1]</td>
-                <td><strong>Espressif Systems</strong></td>
-                <td>"ESP32 Series Datasheet - 2.4 GHz Wi-Fi and Bluetooth combo chip," Espressif Inc., Version 3.9, 2023.</td>
-              </tr>
-              <tr>
-                <td style="text-align:center; font-family:'JetBrains Mono',monospace;">[2]</td>
-                <td><strong>Aosong Electronics</strong></td>
-                <td>"Digital-output relative humidity & temperature sensor/module DHT22 (AM2302) Datasheet," Guangzhou, China.</td>
-              </tr>
-              <tr>
-                <td style="text-align:center; font-family:'JetBrains Mono',monospace;">[3]</td>
-                <td><strong>K. S. Rao, V. S. Murthy</strong></td>
-                <td>"IoT Based Real-Time Environmental and Weather Monitoring System using ESP32," IEEE International Conference on Smart Technologies, 2021.</td>
-              </tr>
-              <tr>
-                <td style="text-align:center; font-family:'JetBrains Mono',monospace;">[4]</td>
-                <td><strong>MathWorks</strong></td>
-                <td>"ThingSpeak Documentation: IoT Analytics with MATLAB Support and RESTful Web Services API," MathWorks Inc., 2024.</td>
-              </tr>
-              <tr>
-                <td style="text-align:center; font-family:'JetBrains Mono',monospace;">[5]</td>
-                <td><strong>N. H. Motlagh et al.</strong></td>
-                <td>"Internet of Things (IoT) for Climate Change and Weather Monitoring," IEEE Access, vol. 8, pp. 62890-62908, 2020.</td>
-              </tr>
-              <tr>
-                <td style="text-align:center; font-family:'JetBrains Mono',monospace;">[6]</td>
-                <td><strong>Solomon Systech</strong></td>
-                <td>"SSD1306 128 x 64 Dot Matrix OLED/PLED Segment/Common Driver with Controller Datasheet," Rev 1.1, 2018.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="slide-footer">
-        <span>Galgotias College of Engineering & Technology</span>
-        <span>Smart Weather Station</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 10: THANK YOU -->
-    <section class="slide" id="slide-10" style="text-align:center; justify-content:center; gap:26px;">
-      <div class="slide-header" style="justify-content:center;">
-        <span class="dept-badge">ECE CAPSTONE PROJECT DEFENSE</span>
-      </div>
-
+    <div style="display: flex; justify-content: space-between; font-size: 16px;">
       <div>
-        <h1 style="font-size: 64px; font-weight: 800; color: var(--text-main); letter-spacing: -1.5px;">
-          THANK YOU
-        </h1>
-        <p style="font-size: 22px; color: var(--accent-coral); font-weight: 600; margin-top: 8px;">
-          Questions & Technical Discussion
-        </p>
+        <p style="color: #b91c1c; font-weight: bold; font-size: 17px;">MENTOR:</p>
+        <p style="margin-top: 4px;">[Mentor Name]</p>
       </div>
-
-      <div style="background: rgba(30, 41, 59, 0.6); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px 32px; display: inline-block; margin: 0 auto;">
-        <p style="font-size: 14.5px; color: var(--text-muted); margin-bottom: 6px;">
-          🌐 <strong>Live Project Website:</strong> 
-          <a href="https://smart-weather-station.vercel.app/" target="_blank" style="color: var(--accent-teal); text-decoration: none; font-weight: 600;">
-            smart-weather-station.vercel.app
-          </a>
-        </p>
-        <p style="font-size: 14.5px; color: var(--text-muted);">
-          📦 <strong>GitHub Repository:</strong> 
-          <a href="https://github.com/prasoon9999/smart-weather-station" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">
-            github.com/prasoon9999/smart-weather-station
-          </a>
-        </p>
+      <div>
+        <p style="font-weight: bold; font-size: 17px;">PRESENTED BY:</p>
+        <p style="margin-top: 3px;">1. Prasoon (Roll No)</p>
+        <p style="margin-top: 3px;">2. Name (Roll No)</p>
+        <p style="margin-top: 3px;">3. Name (Roll No)</p>
       </div>
+    </div>
+  </div>
 
-      <div class="slide-footer" style="margin-top: 20px;">
-        <span>Galgotias College of Engineering & Technology, Greater Noida</span>
-        <span>ECE Department</span>
+  <!-- SLIDE 2 -->
+  <div class="slide">
+    <div class="slide-title">CONTENTS</div>
+    <div class="slide-content" style="padding-left: 60px; font-size: 21px; line-height: 2.2; font-weight: bold;">
+      <p>❖ Introduction</p>
+      <p>❖ Motivation</p>
+      <p>❖ Objectives</p>
+      <p>❖ Description</p>
+      <p>❖ Conclusion</p>
+      <p>❖ References</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide">
+    <div class="slide-title">INTRODUCTION</div>
+    <div class="slide-content">
+      <ul class="clean-list">
+        <li>Weather conditions like temperature and humidity affect our daily lives, health, and work.</li>
+        <li>Traditional weather stations are big, expensive, and cannot be checked easily from home.</li>
+        <li>Internet of Things (IoT) allows us to connect small sensors to the internet to collect weather data automatically.</li>
+        <li>In this project, we built a low-cost smart weather station using an ESP32 board and a DHT22 sensor.</li>
+        <li>The system reads live temperature and humidity, shows them on a small screen, and sends the data to a website so anyone can view it anytime.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide">
+    <div class="slide-title">MOTIVATION</div>
+    <div class="slide-content">
+      <ul class="clean-list">
+        <li><strong>Need for local weather data:</strong> City weather reports are taken far away (like airports) and do not show the exact weather in our room, office, or farm.</li>
+        <li><strong>Low cost:</strong> Commercial weather devices cost a lot of money, but this project can be made at a very low cost using simple parts.</li>
+        <li><strong>Real-time monitoring:</strong> Instead of writing down values by hand, the system updates automatically every few seconds.</li>
+        <li><strong>Access from anywhere:</strong> Anyone with a phone or computer can open our website and check the live weather and past 24-hour charts.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide">
+    <div class="slide-title">OBJECTIVE:-</div>
+    <div class="slide-content">
+      <ul class="clean-list">
+        <li>To build a simple and working smart weather station using ESP32 microcontroller.</li>
+        <li>To accurately measure room temperature and humidity using the DHT22 sensor.</li>
+        <li>To display the current readings on a small OLED screen placed directly on the board.</li>
+        <li>To calculate Heat Index (how hot it feels) and Dew Point to check human comfort.</li>
+        <li>To send all sensor data to the ThingSpeak cloud platform over Wi-Fi every 20 seconds.</li>
+        <li>To show live readings and a 24-hour history graph on an online website hosted on Vercel.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide">
+    <div class="slide-title" style="margin-bottom: 20px;">Description</div>
+    <div class="slide-content" style="font-size: 16.5px; line-height: 1.7;">
+      <p style="font-weight: bold; margin-bottom: 6px;">Hardware components used:</p>
+      <p style="margin-left: 20px;">• <strong>ESP32 Microcontroller:</strong> The main brain with built-in Wi-Fi to collect and send data.</p>
+      <p style="margin-left: 20px;">• <strong>DHT22 Sensor:</strong> Measures temperature (from -40°C to 80°C) and humidity (0 to 100%).</p>
+      <p style="margin-left: 20px;">• <strong>SSD1306 OLED Display:</strong> Small 0.96-inch screen to see the values on the device.</p>
+      
+      <p style="font-weight: bold; margin: 16px 0 6px;">Wiring and Connections:</p>
+      <p style="margin-left: 20px;">• DHT22 data pin is connected to ESP32 Pin GPIO 4.</p>
+      <p style="margin-left: 20px;">• OLED display is connected using I2C wires (SDA to GPIO 21, SCL to GPIO 22).</p>
+      <p style="margin-left: 20px;">• 3.3V and GND power pins are shared between the sensor and screen.</p>
+
+      <p style="font-weight: bold; margin: 16px 0 6px;">Working Flow:</p>
+      <p style="margin-left: 20px; color: #1e40af; font-weight: bold;">
+        DHT22 reads data ➔ ESP32 calculates values ➔ Shows on OLED ➔ Sends to ThingSpeak Cloud ➔ Vercel Website
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide">
+    <div class="slide-title" style="margin-bottom: 15px;">Description</div>
+    <div class="slide-content">
+      <p style="font-weight: bold; font-size: 18px; margin-bottom: 10px;">Results and Live Cloud Data:</p>
+      
+      <table class="table-style">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Live Measured Value</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Temperature</strong></td>
+            <td>26.8 °C</td>
+            <td>Current room temperature</td>
+          </tr>
+          <tr>
+            <td><strong>Humidity</strong></td>
+            <td>69.8 %</td>
+            <td>Current moisture in air</td>
+          </tr>
+          <tr>
+            <td><strong>Heat Index</strong></td>
+            <td>28.5 °C</td>
+            <td>Real feel temperature</td>
+          </tr>
+          <tr>
+            <td><strong>Dew Point</strong></td>
+            <td>20.8 °C</td>
+            <td>Comfort and moisture level</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top: 25px; font-size: 16px; line-height: 1.8;">
+        <p>• The system uploads new data to ThingSpeak every 20 seconds.</p>
+        <p>• The website automatically refreshes every 2 seconds to show live updates.</p>
+        <p>• A clean 24-hour graph draws temperature and humidity history directly in the browser.</p>
+        <p style="margin-top: 8px;"><strong>Live Website:</strong> <a href="https://smart-weather-station.vercel.app/" target="_blank">https://smart-weather-station.vercel.app/</a></p>
+        <p><strong>GitHub Code:</strong> <a href="https://github.com/prasoon9999/smart-weather-station" target="_blank">https://github.com/prasoon9999/smart-weather-station</a></p>
       </div>
-    </section>
+    </div>
+  </div>
 
+  <!-- SLIDE 8 -->
+  <div class="slide">
+    <div class="slide-title">CONCLUSION</div>
+    <div class="slide-content">
+      <ul class="clean-list">
+        <li>A low-cost and working Smart Weather Station was successfully built using ESP32.</li>
+        <li>The DHT22 sensor gives accurate temperature and humidity readings in real time.</li>
+        <li>The OLED display allows us to easily check values without needing an internet connection.</li>
+        <li>The ThingSpeak cloud and Vercel website make it simple for anyone to see weather data from anywhere.</li>
+      </ul>
+
+      <p style="font-weight: bold; margin-top: 25px; font-size: 19px;">Future Scope:</p>
+      <ul class="clean-list" style="margin-top: 10px;">
+        <li>Add a pressure sensor (BMP280) to measure atmospheric pressure and altitude.</li>
+        <li>Add a small solar panel and battery so it can run outdoors without a power plug.</li>
+        <li>Send SMS or mobile alerts if the temperature gets too high.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide">
+    <div class="slide-title">REFERENCES:-</div>
+    <div class="slide-content">
+      <table class="table-style">
+        <thead>
+          <tr>
+            <th style="width: 80px; text-align: center;">S. No.</th>
+            <th>Research Paper / Datasheet</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center;"><strong>1.</strong></td>
+            <td>"IoT Based Weather Monitoring System Using ESP32 and Cloud Analytics", IEEE Conference, 2021. {BASE PAPER}</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>2.</strong></td>
+            <td>Espressif Systems, "ESP32 Series Datasheet - Wi-Fi & Bluetooth Microcontroller", 2023.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>3.</strong></td>
+            <td>Aosong Electronics, "DHT22 (AM2302) Temperature and Humidity Sensor Datasheet".</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>4.</strong></td>
+            <td>Solomon Systech, "SSD1306 0.96 inch OLED Display Driver Datasheet", 2018.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>5.</strong></td>
+            <td>MathWorks, "ThingSpeak IoT Open Cloud Platform Documentation", 2024.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide" style="justify-content: center; align-items: center;">
+    <h1 style="font-size: 64px; font-weight: bold; color: #64748b; letter-spacing: 2px;">
+      THANK YOU
+    </h1>
   </div>
 
 </body>
