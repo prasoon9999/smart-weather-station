@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Smart Weather Station dashboard">
+  <title>Smart Weather Station</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ESP32 / DHT22 PROJECT</p>
+        <h1>Atmosphere, at a glance.</h1>
+        <p class="lede">A calm live view of the air around your sensor.</p>
+      </div>
+      <div class="connection"><span class="pulse"></span><span id="connectionText">Connecting to ESP32...</span></div>
+    </header>
+
+    <section class="hero-grid" aria-label="Current readings">
+      <article class="reading-card temperature-card">
+        <div class="card-top"><span class="card-label">Temperature</span><span class="metric-mark">TEMP</span></div>
+        <div class="metric"><span id="temperature">24.6</span><small>°C</small></div>
+        <div class="range"><span>LOW <b id="temperatureLow">22.1°C</b></span><span>HIGH <b id="temperatureHigh">27.4°C</b></span></div>
+      </article>
+      <article class="reading-card humidity-card">
+        <div class="card-top"><span class="card-label">Humidity</span><span class="metric-mark">MOISTURE</span></div>
+        <div class="metric"><span id="humidity">54</span><small>%</small></div>
+        <div class="range"><span>LOW <b id="humidityLow">48%</b></span><span>HIGH <b id="humidityHigh">61%</b></span></div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel chart-panel">
+        <div class="panel-heading"><div><p class="eyebrow">LAST 24 HOURS</p><h2>Reading trail</h2></div><div class="legend"><span><i class="temp-dot"></i>Temperature</span><span><i class="humidity-dot"></i>Humidity</span></div></div>
+        <canvas id="historyChart" width="900" height="330" aria-label="Temperature and humidity history chart"></canvas>
+        <div class="chart-axis"><span>24h ago</span><span>Now</span></div>
+      </article>
+      <aside class="side-stack">
+        <article class="panel status-panel"><p class="eyebrow">COMFORT CHECK</p><div class="comfort-row"><span class="comfort-icon">✓</span><div><h2 id="comfortStatus">Comfortable</h2><p>Conditions are in a pleasant range.</p></div></div><div class="status-line"><span>Heat index</span><strong id="heatIndex">24.5°C</strong></div><div class="status-line"><span>Dew point</span><strong id="dewPoint">14.8°C</strong></div></article>
+        <article class="panel station-panel"><div class="station-heading"><p class="eyebrow">STATION STATUS</p><span class="status-badge">READY</span></div><div class="status-line"><span>Sensor</span><strong>DHT22</strong></div><div class="status-line"><span>Display</span><strong>SSD1306</strong></div><div class="status-line"><span>Last update</span><strong id="lastUpdate">Just now</strong></div></article>
+      </aside>
+    </section>
+
+    <footer><span>SMART WEATHER STATION</span><span>ESP32 local prototype · <span id="clock">--:--:--</span></span></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root { --ink: #172b2c; --muted: #718181; --paper: #f2f0e9; --card: #fffdf8; --line: #dce1d9; --orange: #e87652; --teal: #168b83; --yellow: #f1c75b; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: Manrope, sans-serif; }
+body::before { content: ''; position: fixed; inset: 0; pointer-events: none; opacity: .26; background-image: radial-gradient(#9eaa9f 0.7px, transparent 0.7px); background-size: 18px 18px; mask-image: linear-gradient(to bottom, black, transparent 70%); }
+.shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 54px 0 28px; position: relative; }
+.topbar { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: 42px; animation: rise .65s ease both; }
+.eyebrow { color: var(--teal); font: 500 .68rem/1.2 'DM Mono', monospace; letter-spacing: .13em; margin: 0 0 12px; }
+h1 { font-size: clamp(2.7rem, 7vw, 5.8rem); letter-spacing: -.07em; line-height: .91; margin: 0; max-width: 690px; font-weight: 800; }
+.lede { color: var(--muted); font-size: 1rem; margin: 19px 0 0; }
+.connection { color: var(--muted); font: .75rem 'DM Mono', monospace; padding-bottom: 8px; white-space: nowrap; }
+.pulse { display: inline-block; width: 8px; height: 8px; border-radius: 100%; background: var(--teal); box-shadow: 0 0 0 5px #168b8320; margin-right: 9px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; animation: rise .65s .1s ease both; }
+.reading-card, .panel { background: var(--card); border: 1px solid var(--line); border-radius: 9px; box-shadow: 0 13px 36px #2648440b; }
+.reading-card { min-height: 246px; padding: 28px 30px; position: relative; overflow: hidden; }
+.reading-card::after { content: ''; position: absolute; width: 190px; height: 190px; border: 1px solid currentColor; border-radius: 50%; right: -82px; bottom: -92px; opacity: .16; }
+.temperature-card { color: var(--orange); }.humidity-card { color: var(--teal); }
+.card-top, .range, .panel-heading, .station-heading, .status-line, footer { display: flex; justify-content: space-between; align-items: center; }
+.card-label { color: var(--ink); font-size: .9rem; font-weight: 700; }.metric-mark { color: currentColor; font: .63rem 'DM Mono', monospace; letter-spacing: .1em; }
+.metric { color: var(--ink); font-size: clamp(4rem, 10vw, 7.4rem); font-weight: 700; letter-spacing: -.1em; line-height: 1; margin: 35px 0 28px; }.metric small { color: var(--muted); font-size: .28em; font-weight: 500; letter-spacing: -.02em; margin-left: 10px; vertical-align: top; }
+.range { color: var(--muted); font: .65rem 'DM Mono', monospace; gap: 16px; }.range b { color: var(--ink); font-weight: 500; margin-left: 4px; }
+.content-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(290px, .8fr); gap: 16px; margin-top: 16px; animation: rise .65s .2s ease both; }
+.panel { padding: 26px 28px; }.panel-heading { align-items: start; }.panel-heading .eyebrow { margin-bottom: 8px; }h2 { font-size: 1.18rem; letter-spacing: -.04em; margin: 0; }.legend { display: flex; gap: 14px; color: var(--muted); font: .65rem 'DM Mono', monospace; }.legend i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }.temp-dot { background: var(--orange); }.humidity-dot { background: var(--teal); }
+canvas { display: block; height: 310px; margin-top: 20px; width: 100%; }.chart-axis { color: var(--muted); display: flex; justify-content: space-between; font: .62rem 'DM Mono', monospace; margin-top: 8px; }
+.side-stack { display: grid; gap: 16px; }.status-panel { background: var(--ink); color: var(--card); }.status-panel .eyebrow { color: var(--yellow); }.comfort-row { display: flex; align-items: center; gap: 13px; margin: 27px 0 28px; }.comfort-row h2 { color: var(--card); font-size: 1.45rem; }.comfort-row p { color: #9db0ad; font-size: .76rem; margin: 6px 0 0; }.comfort-icon { align-items: center; background: #168b83; border-radius: 50%; color: white; display: flex; font-size: 1.25rem; height: 42px; justify-content: center; width: 42px; }.status-line { border-top: 1px solid var(--line); color: var(--muted); font: .75rem 'DM Mono', monospace; padding: 13px 0; }.status-panel .status-line { border-color: #ffffff20; }.status-line strong { color: var(--ink); font-weight: 500; }.status-panel .status-line strong { color: var(--card); }.station-heading { margin-bottom: 15px; }.station-heading .eyebrow { margin: 0; }.status-badge { background: #e0f0dc; color: #397348; font: .6rem 'DM Mono', monospace; padding: 5px 7px; border-radius: 3px; }
+footer { color: var(--muted); font: .62rem 'DM Mono', monospace; letter-spacing: .04em; margin-top: 28px; }.status-line:last-child { padding-bottom: 0; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 760px) { .shell { width: min(100% - 28px, 600px); padding-top: 32px; }.topbar { align-items: start; flex-direction: column; padding-bottom: 30px; }.connection { padding: 0; }.hero-grid, .content-grid { grid-template-columns: 1fr; }.reading-card { min-height: 210px; }.metric { margin: 25px 0 22px; } canvas { height: 230px; }.panel-heading { display: block; }.legend { margin-top: 15px; } footer { align-items: start; flex-direction: column; gap: 9px; } }
