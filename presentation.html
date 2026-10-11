@@ -4,100 +4,186 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Weather Station - Project Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --navy: #1a365d;
+      --slate: #1e293b;
+      --muted: #64748b;
+      --teal: #0d9488;
+      --red: #b91c1c;
+      --card-bg: #f8fafc;
+      --border: #e2e8f0;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: Arial, sans-serif;
-      background: #e2e8f0;
-      color: #000;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f1f5f9;
+      color: var(--slate);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 30px 15px;
-      gap: 30px;
+      gap: 35px;
     }
+
+    /* Fixed top toolbar */
     .controls {
       position: sticky;
       top: 15px;
       z-index: 100;
-      background: white;
-      padding: 10px 20px;
-      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      padding: 10px 22px;
+      border-radius: 40px;
       display: flex;
-      gap: 15px;
+      gap: 16px;
       align-items: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border);
     }
     .btn {
-      background: #1e40af;
+      background: var(--navy);
       color: white;
       text-decoration: none;
-      padding: 8px 16px;
+      padding: 9px 18px;
       border-radius: 20px;
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 13.5px;
+      font-weight: 600;
       border: none;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
     }
-    .btn:hover { background: #1d4ed8; }
+    .btn:hover { background: #2563eb; }
     .btn-secondary { background: #475569; }
     .btn-secondary:hover { background: #334155; }
 
     /* Exact 16:9 Slide Dimensions */
     .slide {
-      width: 1060px;
-      height: 596px;
+      width: 1080px;
+      min-height: 608px;
       background: white;
-      padding: 40px 60px;
+      border-radius: 16px;
+      padding: 44px 60px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: space-between;
       position: relative;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .slide-top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--navy), var(--teal));
     }
 
-    .slide-title {
-      font-size: 32px;
-      font-weight: bold;
+    .slide-title-wrap {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 24px;
+    }
+    .slide-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+    .slide-title-bar {
+      width: 60px;
+      height: 3px;
+      background: var(--teal);
+      margin: 6px auto 0;
+      border-radius: 2px;
+    }
 
-    .slide-content {
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 15.5px;
+      line-height: 1.5;
+    }
+    .card-icon {
+      color: var(--teal);
       font-size: 18px;
-      line-height: 1.8;
-      color: #111;
-    }
-
-    ul.clean-list {
-      list-style-type: disc;
-      padding-left: 30px;
-    }
-    ul.clean-list li {
-      margin-bottom: 18px;
-    }
-
-    .table-style {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      font-size: 15px;
-    }
-    .table-style th {
-      background: #4682b4;
-      color: white;
-      padding: 10px 14px;
-      text-align: left;
       font-weight: bold;
     }
-    .table-style td {
-      padding: 10px 14px;
-      border-bottom: 1px solid #cbd5e1;
+    .card strong {
+      color: var(--navy);
     }
-    .table-style tr:nth-child(even) td {
-      background: #f1f5f9;
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* Table styling */
+    .table-container {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: var(--navy);
+      color: white;
+      padding: 11px 16px;
+      text-align: left;
+      font-weight: 600;
+    }
+    td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--slate);
+    }
+    tr:nth-child(even) td {
+      background: var(--card-bg);
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 15px;
     }
 
     @media print {
@@ -105,10 +191,11 @@
       .controls { display: none; }
       .slide {
         box-shadow: none;
+        border-radius: 0;
         page-break-after: always;
         width: 100%;
         height: 100vh;
-        padding: 50px;
+        border: none;
       }
     }
   </style>
@@ -116,227 +203,311 @@
 <body>
 
   <div class="controls">
-    <a href="Smart_Weather_Station_Simple.pptx" download class="btn">📥 Download PowerPoint (.pptx)</a>
+    <a href="Smart_Weather_Station_Final.pptx" download class="btn">📥 Download Final PowerPoint (.pptx)</a>
     <button onclick="window.print()" class="btn btn-secondary">🖨️ Save as PDF</button>
-    <a href="https://smart-weather-station.vercel.app/" target="_blank" class="btn btn-secondary">🌐 Open Website</a>
+    <a href="https://smart-weather-station.vercel.app/" target="_blank" class="btn btn-secondary">🌐 Open Live Website</a>
   </div>
 
-  <!-- SLIDE 1 -->
-  <div class="slide" style="justify-content: space-between;">
+  <!-- SLIDE 1: TITLE SLIDE (Matches Sample Format, Beautifully Styled) -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
     <div style="text-align: center;">
-      <h2 style="font-family: 'Times New Roman', serif; font-size: 24px; font-weight: bold;">
-        Galgotias College of Engineering & Technology,<br>Greater Noida
+      <h2 style="font-size: 24px; font-weight: 800; color: var(--navy);">
+        Galgotias College of Engineering & Technology, Greater Noida
       </h2>
-      <h3 style="font-family: 'Times New Roman', serif; font-size: 15px; font-weight: bold; margin-top: 10px;">
+      <h3 style="font-size: 14px; font-weight: 700; color: var(--slate); margin-top: 6px; letter-spacing: 0.5px;">
         DEPARTMENT OF ELECTRONIC AND COMMUNICATION ENGINEERING
       </h3>
+      <div style="width: 100px; height: 3px; background: var(--teal); margin: 12px auto 0; border-radius: 2px;"></div>
     </div>
 
-    <div style="text-align: center; margin: 40px 0;">
-      <h1 style="font-size: 38px; font-weight: bold;">Smart Weather Station</h1>
-      <p style="font-size: 19px; color: #444; margin-top: 8px;">Using ESP32, DHT22 Sensor and Cloud Dashboard</p>
-    </div>
-
-    <div style="display: flex; justify-content: space-between; font-size: 16px;">
-      <div>
-        <p style="color: #b91c1c; font-weight: bold; font-size: 17px;">MENTOR:</p>
-        <p style="margin-top: 4px;">[Mentor Name]</p>
-      </div>
-      <div>
-        <p style="font-weight: bold; font-size: 17px;">PRESENTED BY:</p>
-        <p style="margin-top: 3px;">1. Prasoon (Roll No)</p>
-        <p style="margin-top: 3px;">2. Name (Roll No)</p>
-        <p style="margin-top: 3px;">3. Name (Roll No)</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 2 -->
-  <div class="slide">
-    <div class="slide-title">CONTENTS</div>
-    <div class="slide-content" style="padding-left: 60px; font-size: 21px; line-height: 2.2; font-weight: bold;">
-      <p>❖ Introduction</p>
-      <p>❖ Motivation</p>
-      <p>❖ Objectives</p>
-      <p>❖ Description</p>
-      <p>❖ Conclusion</p>
-      <p>❖ References</p>
-    </div>
-  </div>
-
-  <!-- SLIDE 3 -->
-  <div class="slide">
-    <div class="slide-title">INTRODUCTION</div>
-    <div class="slide-content">
-      <ul class="clean-list">
-        <li>Weather conditions like temperature and humidity affect our daily lives, health, and work.</li>
-        <li>Traditional weather stations are big, expensive, and cannot be checked easily from home.</li>
-        <li>Internet of Things (IoT) allows us to connect small sensors to the internet to collect weather data automatically.</li>
-        <li>In this project, we built a low-cost smart weather station using an ESP32 board and a DHT22 sensor.</li>
-        <li>The system reads live temperature and humidity, shows them on a small screen, and sends the data to a website so anyone can view it anytime.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- SLIDE 4 -->
-  <div class="slide">
-    <div class="slide-title">MOTIVATION</div>
-    <div class="slide-content">
-      <ul class="clean-list">
-        <li><strong>Need for local weather data:</strong> City weather reports are taken far away (like airports) and do not show the exact weather in our room, office, or farm.</li>
-        <li><strong>Low cost:</strong> Commercial weather devices cost a lot of money, but this project can be made at a very low cost using simple parts.</li>
-        <li><strong>Real-time monitoring:</strong> Instead of writing down values by hand, the system updates automatically every few seconds.</li>
-        <li><strong>Access from anywhere:</strong> Anyone with a phone or computer can open our website and check the live weather and past 24-hour charts.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- SLIDE 5 -->
-  <div class="slide">
-    <div class="slide-title">OBJECTIVE:-</div>
-    <div class="slide-content">
-      <ul class="clean-list">
-        <li>To build a simple and working smart weather station using ESP32 microcontroller.</li>
-        <li>To accurately measure room temperature and humidity using the DHT22 sensor.</li>
-        <li>To display the current readings on a small OLED screen placed directly on the board.</li>
-        <li>To calculate Heat Index (how hot it feels) and Dew Point to check human comfort.</li>
-        <li>To send all sensor data to the ThingSpeak cloud platform over Wi-Fi every 20 seconds.</li>
-        <li>To show live readings and a 24-hour history graph on an online website hosted on Vercel.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- SLIDE 6 -->
-  <div class="slide">
-    <div class="slide-title" style="margin-bottom: 20px;">Description</div>
-    <div class="slide-content" style="font-size: 16.5px; line-height: 1.7;">
-      <p style="font-weight: bold; margin-bottom: 6px;">Hardware components used:</p>
-      <p style="margin-left: 20px;">• <strong>ESP32 Microcontroller:</strong> The main brain with built-in Wi-Fi to collect and send data.</p>
-      <p style="margin-left: 20px;">• <strong>DHT22 Sensor:</strong> Measures temperature (from -40°C to 80°C) and humidity (0 to 100%).</p>
-      <p style="margin-left: 20px;">• <strong>SSD1306 OLED Display:</strong> Small 0.96-inch screen to see the values on the device.</p>
-      
-      <p style="font-weight: bold; margin: 16px 0 6px;">Wiring and Connections:</p>
-      <p style="margin-left: 20px;">• DHT22 data pin is connected to ESP32 Pin GPIO 4.</p>
-      <p style="margin-left: 20px;">• OLED display is connected using I2C wires (SDA to GPIO 21, SCL to GPIO 22).</p>
-      <p style="margin-left: 20px;">• 3.3V and GND power pins are shared between the sensor and screen.</p>
-
-      <p style="font-weight: bold; margin: 16px 0 6px;">Working Flow:</p>
-      <p style="margin-left: 20px; color: #1e40af; font-weight: bold;">
-        DHT22 reads data ➔ ESP32 calculates values ➔ Shows on OLED ➔ Sends to ThingSpeak Cloud ➔ Vercel Website
+    <div style="text-align: center; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 32px 20px; margin: 20px 0;">
+      <h1 style="font-size: 40px; font-weight: 800; color: var(--navy); line-height: 1.15;">
+        Smart Weather Station
+      </h1>
+      <p style="font-size: 19px; color: var(--teal); font-weight: 600; margin-top: 10px;">
+        Using ESP32, DHT22 Sensor and Cloud Dashboard
       </p>
     </div>
-  </div>
 
-  <!-- SLIDE 7 -->
-  <div class="slide">
-    <div class="slide-title" style="margin-bottom: 15px;">Description</div>
-    <div class="slide-content">
-      <p style="font-weight: bold; font-size: 18px; margin-bottom: 10px;">Results and Live Cloud Data:</p>
-      
-      <table class="table-style">
-        <thead>
-          <tr>
-            <th>Parameter</th>
-            <th>Live Measured Value</th>
-            <th>Meaning</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Temperature</strong></td>
-            <td>26.8 °C</td>
-            <td>Current room temperature</td>
-          </tr>
-          <tr>
-            <td><strong>Humidity</strong></td>
-            <td>69.8 %</td>
-            <td>Current moisture in air</td>
-          </tr>
-          <tr>
-            <td><strong>Heat Index</strong></td>
-            <td>28.5 °C</td>
-            <td>Real feel temperature</td>
-          </tr>
-          <tr>
-            <td><strong>Dew Point</strong></td>
-            <td>20.8 °C</td>
-            <td>Comfort and moisture level</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div style="margin-top: 25px; font-size: 16px; line-height: 1.8;">
-        <p>• The system uploads new data to ThingSpeak every 20 seconds.</p>
-        <p>• The website automatically refreshes every 2 seconds to show live updates.</p>
-        <p>• A clean 24-hour graph draws temperature and humidity history directly in the browser.</p>
-        <p style="margin-top: 8px;"><strong>Live Website:</strong> <a href="https://smart-weather-station.vercel.app/" target="_blank">https://smart-weather-station.vercel.app/</a></p>
-        <p><strong>GitHub Code:</strong> <a href="https://github.com/prasoon9999/smart-weather-station" target="_blank">https://github.com/prasoon9999/smart-weather-station</a></p>
+    <div style="display: flex; justify-content: space-between; padding: 0 10px;">
+      <div>
+        <p style="color: var(--red); font-weight: 800; font-size: 15px; letter-spacing: 0.5px;">MENTOR:</p>
+        <p style="font-size: 16px; font-weight: 700; color: var(--navy); margin-top: 4px;">[Mentor Name]</p>
+        <p style="font-size: 13px; color: var(--muted);">Assistant Professor, Dept of ECE</p>
+      </div>
+      <div>
+        <p style="color: var(--navy); font-weight: 800; font-size: 15px; letter-spacing: 0.5px;">PRESENTED BY:</p>
+        <p style="font-size: 15px; color: var(--slate); margin-top: 4px;">1. <strong>Prasoon</strong> (Roll No: ____________)</p>
+        <p style="font-size: 15px; color: var(--slate); margin-top: 2px;">2. Name (Roll No: ____________)</p>
+        <p style="font-size: 15px; color: var(--slate); margin-top: 2px;">3. Name (Roll No: ____________)</p>
       </div>
     </div>
-  </div>
 
-  <!-- SLIDE 8 -->
-  <div class="slide">
-    <div class="slide-title">CONCLUSION</div>
-    <div class="slide-content">
-      <ul class="clean-list">
-        <li>A low-cost and working Smart Weather Station was successfully built using ESP32.</li>
-        <li>The DHT22 sensor gives accurate temperature and humidity readings in real time.</li>
-        <li>The OLED display allows us to easily check values without needing an internet connection.</li>
-        <li>The ThingSpeak cloud and Vercel website make it simple for anyone to see weather data from anywhere.</li>
-      </ul>
-
-      <p style="font-weight: bold; margin-top: 25px; font-size: 19px;">Future Scope:</p>
-      <ul class="clean-list" style="margin-top: 10px;">
-        <li>Add a pressure sensor (BMP280) to measure atmospheric pressure and altitude.</li>
-        <li>Add a small solar panel and battery so it can run outdoors without a power plug.</li>
-        <li>Send SMS or mobile alerts if the temperature gets too high.</li>
-      </ul>
+    <div class="slide-footer">
+      <span>Galgotias College of Engineering & Technology</span>
+      <span>Slide 1 / 10</span>
     </div>
   </div>
 
-  <!-- SLIDE 9 -->
+  <!-- SLIDE 2: CONTENTS -->
   <div class="slide">
-    <div class="slide-title">REFERENCES:-</div>
-    <div class="slide-content">
-      <table class="table-style">
-        <thead>
-          <tr>
-            <th style="width: 80px; text-align: center;">S. No.</th>
-            <th>Research Paper / Datasheet</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="text-align: center;"><strong>1.</strong></td>
-            <td>"IoT Based Weather Monitoring System Using ESP32 and Cloud Analytics", IEEE Conference, 2021. {BASE PAPER}</td>
-          </tr>
-          <tr>
-            <td style="text-align: center;"><strong>2.</strong></td>
-            <td>Espressif Systems, "ESP32 Series Datasheet - Wi-Fi & Bluetooth Microcontroller", 2023.</td>
-          </tr>
-          <tr>
-            <td style="text-align: center;"><strong>3.</strong></td>
-            <td>Aosong Electronics, "DHT22 (AM2302) Temperature and Humidity Sensor Datasheet".</td>
-          </tr>
-          <tr>
-            <td style="text-align: center;"><strong>4.</strong></td>
-            <td>Solomon Systech, "SSD1306 0.96 inch OLED Display Driver Datasheet", 2018.</td>
-          </tr>
-          <tr>
-            <td style="text-align: center;"><strong>5.</strong></td>
-            <td>MathWorks, "ThingSpeak IoT Open Cloud Platform Documentation", 2024.</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="slide-top-bar"></div>
+    <div class="slide-title-wrap">
+      <div class="slide-title">CONTENTS</div>
+      <div class="slide-title-bar"></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="card"><span class="card-icon">❖</span><div><strong>Introduction</strong><p style="font-size:13px; color:var(--muted); margin-top:2px;">Why weather monitoring matters and how IoT helps.</p></div></div>
+        <div class="card"><span class="card-icon">❖</span><div><strong>Motivation</strong><p style="font-size:13px; color:var(--muted); margin-top:2px;">Problems with old stations and the need for local data.</p></div></div>
+        <div class="card"><span class="card-icon">❖</span><div><strong>Objectives</strong><p style="font-size:13px; color:var(--muted); margin-top:2px;">What we wanted to build and achieve in this project.</p></div></div>
+        <div class="card"><span class="card-icon">❖</span><div><strong>Description</strong><p style="font-size:13px; color:var(--muted); margin-top:2px;">Hardware parts, circuit connections, and working flow.</p></div></div>
+        <div class="card"><span class="card-icon">❖</span><div><strong>Conclusion</strong><p style="font-size:13px; color:var(--muted); margin-top:2px;">What we achieved and ideas for future improvements.</p></div></div>
+        <div class="card"><span class="card-icon">❖</span><div><strong>References</strong><p style="font-size:13px; color:var(--muted); margin-top:2px;">Research papers, books, and component datasheets.</p></div></div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Smart Weather Station</span>
+      <span>Slide 2 / 10</span>
     </div>
   </div>
 
-  <!-- SLIDE 10 -->
-  <div class="slide" style="justify-content: center; align-items: center;">
-    <h1 style="font-size: 64px; font-weight: bold; color: #64748b; letter-spacing: 2px;">
-      THANK YOU
-    </h1>
+  <!-- SLIDE 3: INTRODUCTION -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="slide-title-wrap">
+      <div class="slide-title">INTRODUCTION</div>
+      <div class="slide-title-bar"></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="card"><span class="card-icon">•</span><span>Weather conditions like temperature and humidity affect our daily lives, health, and work.</span></div>
+      <div class="card"><span class="card-icon">•</span><span>Traditional weather stations are big, expensive, and cannot be checked easily from home.</span></div>
+      <div class="card"><span class="card-icon">•</span><span>Internet of Things (IoT) allows us to connect small sensors to the internet to collect weather data automatically.</span></div>
+      <div class="card"><span class="card-icon">•</span><span>In this project, we built a low-cost smart weather station using an ESP32 board and a DHT22 sensor.</span></div>
+      <div class="card"><span class="card-icon">•</span><span>The system reads live temperature and humidity, shows them on a small screen, and sends the data to a website so anyone can view it anytime.</span></div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Smart Weather Station</span>
+      <span>Slide 3 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: MOTIVATION -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="slide-title-wrap">
+      <div class="slide-title">MOTIVATION</div>
+      <div class="slide-title-bar"></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="card"><span class="card-icon">✔</span><span><strong>Need for local weather data:</strong> City weather reports are taken far away (like airports) and do not show the exact weather in our room, office, or farm.</span></div>
+      <div class="card"><span class="card-icon">✔</span><span><strong>Low cost:</strong> Commercial weather devices cost a lot of money, but this project can be made at a very low cost using simple parts.</span></div>
+      <div class="card"><span class="card-icon">✔</span><span><strong>Real-time monitoring:</strong> Instead of writing down values by hand, the system updates automatically every few seconds.</span></div>
+      <div class="card"><span class="card-icon">✔</span><span><strong>Access from anywhere:</strong> Anyone with a phone or computer can open our website and check the live weather and past 24-hour charts.</span></div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Smart Weather Station</span>
+      <span>Slide 4 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: OBJECTIVE:- -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="slide-title-wrap">
+      <div class="slide-title">OBJECTIVE:-</div>
+      <div class="slide-title-bar"></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="card"><span class="card-icon">✔</span><span>To build a simple and working smart weather station using ESP32 microcontroller.</span></div>
+      <div class="card"><span class="card-icon">✔</span><span>To accurately measure room temperature and humidity using the DHT22 sensor.</span></div>
+      <div class="card"><span class="card-icon">✔</span><span>To display the current readings on a small OLED screen placed directly on the board.</span></div>
+      <div class="card"><span class="card-icon">✔</span><span>To calculate Heat Index (how hot it feels) and Dew Point to check human comfort.</span></div>
+      <div class="card"><span class="card-icon">✔</span><span>To send all sensor data to the ThingSpeak cloud platform over Wi-Fi every 20 seconds.</span></div>
+      <div class="card"><span class="card-icon">✔</span><span>To show live readings and a 24-hour history graph on an online website hosted on Vercel.</span></div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Smart Weather Station</span>
+      <span>Slide 5 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: DESCRIPTION (Part 1) -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="slide-title-wrap">
+      <div class="slide-title">Description</div>
+      <div class="slide-title-bar"></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-3">
+        <div class="card" style="flex-direction:column; align-items:flex-start;">
+          <strong>1. ESP32 Microcontroller</strong>
+          <p style="font-size:13.5px; color:var(--slate); margin-top:6px;">The main brain with built-in Wi-Fi to collect sensor data and send it to the cloud.</p>
+        </div>
+        <div class="card" style="flex-direction:column; align-items:flex-start;">
+          <strong>2. DHT22 Sensor</strong>
+          <p style="font-size:13.5px; color:var(--slate); margin-top:6px;">Measures temperature (-40°C to 80°C) and humidity (0 to 100%) with high accuracy.</p>
+        </div>
+        <div class="card" style="flex-direction:column; align-items:flex-start;">
+          <strong>3. SSD1306 OLED Display</strong>
+          <p style="font-size:13.5px; color:var(--slate); margin-top:6px;">Small 0.96-inch screen that shows live values directly on the device.</p>
+        </div>
+      </div>
+
+      <div class="card" style="flex-direction:column; align-items:flex-start; margin-top:4px;">
+        <strong style="color:var(--navy);">Wiring and Connections:</strong>
+        <p style="font-size:14px; margin-top:4px;">• DHT22 data pin is connected to ESP32 Pin GPIO 4.</p>
+        <p style="font-size:14px;">• OLED display is connected using I2C wires (SDA to GPIO 21, SCL to GPIO 22).</p>
+        <p style="font-size:14px;">• 3.3V and GND power pins are shared between the sensor and screen.</p>
+        <div style="background:white; border:1px solid var(--border); padding:8px 14px; border-radius:8px; margin-top:6px; width:100%;">
+          <strong style="color:var(--teal);">Working Flow:</strong>
+          <span style="font-size:13.5px; color:var(--navy); font-weight:600;">
+            DHT22 reads data ➔ ESP32 calculates values ➔ Shows on OLED ➔ Sends to ThingSpeak Cloud ➔ Vercel Website
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Smart Weather Station</span>
+      <span>Slide 6 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: DESCRIPTION (Part 2) -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="slide-title-wrap">
+      <div class="slide-title">Description</div>
+      <div class="slide-title-bar"></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-2">
+        <div>
+          <p style="font-weight:700; color:var(--navy); font-size:15px; margin-bottom:6px;">Results and Live Cloud Data:</p>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>Parameter</th><th>Live Value</th><th>Meaning</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Temperature</strong></td><td>26.8 °C</td><td>Room temperature</td></tr>
+                <tr><td><strong>Humidity</strong></td><td>69.8 %</td><td>Moisture in air</td></tr>
+                <tr><td><strong>Heat Index</strong></td><td>28.5 °C</td><td>Real feel temperature</td></tr>
+                <tr><td><strong>Dew Point</strong></td><td>20.8 °C</td><td>Moisture comfort</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" style="flex-direction:column; align-items:flex-start; justify-content:center;">
+          <strong style="font-size:16px;">Live Website & Cloud Features:</strong>
+          <p style="font-size:13.5px; margin-top:8px;">• ESP32 sends new data to ThingSpeak every 20 seconds.</p>
+          <p style="font-size:13.5px; margin-top:4px;">• The website automatically refreshes every 2 seconds.</p>
+          <p style="font-size:13.5px; margin-top:4px;">• A clean 24-hour graph draws temperature and humidity history directly in the browser.</p>
+          <div style="margin-top:10px; font-size:13px;">
+            <p>🌐 <strong>Website:</strong> <a href="https://smart-weather-station.vercel.app/" target="_blank" style="color:var(--teal);">smart-weather-station.vercel.app</a></p>
+            <p style="margin-top:2px;">📦 <strong>GitHub:</strong> <a href="https://github.com/prasoon9999/smart-weather-station" target="_blank" style="color:var(--navy);">prasoon9999/smart-weather-station</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Smart Weather Station</span>
+      <span>Slide 7 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: CONCLUSION -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="slide-title-wrap">
+      <div class="slide-title">CONCLUSION</div>
+      <div class="slide-title-bar"></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="card" style="flex-direction:column; align-items:flex-start;">
+        <strong style="color:var(--navy); font-size:16px;">Summary of Work:</strong>
+        <p style="font-size:14px; margin-top:4px;">• A low-cost and working Smart Weather Station was successfully built using ESP32.</p>
+        <p style="font-size:14px; margin-top:2px;">• The DHT22 sensor gives accurate temperature and humidity readings in real time.</p>
+        <p style="font-size:14px; margin-top:2px;">• The OLED display allows us to easily check values without needing an internet connection.</p>
+        <p style="font-size:14px; margin-top:2px;">• The ThingSpeak cloud and Vercel website make it simple for anyone to see weather data from anywhere.</p>
+      </div>
+
+      <div class="card" style="flex-direction:column; align-items:flex-start; margin-top:6px; border-left: 3px solid var(--teal);">
+        <strong style="color:var(--teal); font-size:16px;">Future Scope:</strong>
+        <p style="font-size:14px; margin-top:4px;">• Add a pressure sensor (BMP280) to measure atmospheric pressure and altitude.</p>
+        <p style="font-size:14px; margin-top:2px;">• Add a small solar panel and battery so it can run outdoors without a power plug.</p>
+        <p style="font-size:14px; margin-top:2px;">• Send SMS or mobile alerts if the temperature gets too high.</p>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Smart Weather Station</span>
+      <span>Slide 8 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: REFERENCES:- -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="slide-title-wrap">
+      <div class="slide-title">REFERENCES:-</div>
+      <div class="slide-title-bar"></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th style="width:70px; text-align:center;">S. No.</th><th>Research Paper / Datasheet</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="text-align:center;"><strong>1.</strong></td><td>"IoT Based Weather Monitoring System Using ESP32 and Cloud Analytics", IEEE Conference, 2021. {BASE PAPER}</td></tr>
+            <tr><td style="text-align:center;"><strong>2.</strong></td><td>Espressif Systems, "ESP32 Series Datasheet - Wi-Fi & Bluetooth Microcontroller", 2023.</td></tr>
+            <tr><td style="text-align:center;"><strong>3.</strong></td><td>Aosong Electronics, "DHT22 (AM2302) Temperature and Humidity Sensor Datasheet".</td></tr>
+            <tr><td style="text-align:center;"><strong>4.</strong></td><td>Solomon Systech, "SSD1306 0.96 inch OLED Display Driver Datasheet", 2018.</td></tr>
+            <tr><td style="text-align:center;"><strong>5.</strong></td><td>MathWorks, "ThingSpeak IoT Open Cloud Platform Documentation", 2024.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Smart Weather Station</span>
+      <span>Slide 9 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: THANK YOU -->
+  <div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+    <div class="slide-top-bar"></div>
+    <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 48px 80px;">
+      <h1 style="font-size: 58px; font-weight: 800; color: var(--navy); letter-spacing: 1px;">
+        THANK YOU
+      </h1>
+      <p style="font-size: 20px; color: var(--teal); font-weight: 600; margin-top: 10px;">
+        Questions & Answers
+      </p>
+    </div>
+    <div class="slide-footer" style="position: absolute; bottom: 20px; left: 60px; right: 60px;">
+      <span>Galgotias College of Engineering & Technology, Greater Noida</span>
+      <span>ECE Department</span>
+    </div>
   </div>
 
 </body>
