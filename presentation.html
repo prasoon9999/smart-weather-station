@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Weather Station - Project Presentation</title>
+  <style>
+    :root {
+      --primary: #102c57;
+      --accent: #e87652;
+      --teal: #168b83;
+      --maroon: #8c1d22;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0f172a;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 15px;
+      gap: 40px;
+    }
+    .controls {
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 12px 24px;
+      border-radius: 40px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn:hover {
+      background: #d46340;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #334155;
+    }
+    .btn-secondary:hover {
+      background: #475569;
+    }
+    .slide {
+      width: 1060px;
+      min-height: 596px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 40px 55px;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    .slide-top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--teal), var(--accent));
+    }
+    .college-header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+    .college-header h3 {
+      font-size: 16px;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .college-header p {
+      font-size: 13px;
+      color: var(--maroon);
+      font-weight: 700;
+      margin-top: 2px;
+      letter-spacing: 0.3px;
+    }
+    .slide-title {
+      font-size: 26px;
+      color: var(--primary);
+      font-weight: 800;
+      margin-bottom: 6px;
+      position: relative;
+      display: inline-block;
+    }
+    .slide-title::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 4px;
+      background: var(--accent);
+      margin-top: 4px;
+      border-radius: 2px;
+    }
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      margin: 15px 0;
+    }
+    .bullet-point {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #334155;
+      display: flex;
+      gap: 12px;
+    }
+    .bullet-point strong {
+      color: var(--primary);
+    }
+    .bullet-icon {
+      color: var(--accent);
+      font-size: 18px;
+      line-height: 1;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-text {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.5;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      background: var(--primary);
+      color: white;
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+    }
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        gap: 0;
+      }
+      .controls {
+        display: none;
+      }
+      .slide {
+        box-shadow: none;
+        border-radius: 0;
+        page-break-after: always;
+        width: 100%;
+        min-height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="controls">
+    <a href="Smart_Weather_Station_Presentation.pptx" download class="btn">📥 Download PowerPoint (.PPTX)</a>
+    <button onclick="window.print()" class="btn btn-secondary">🖨️ Print / Save as PDF</button>
+    <a href="https://smart-weather-station.vercel.app/" target="_blank" class="btn btn-secondary">🌐 Live Website</a>
+  </div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header" style="text-align: center; border: none;">
+      <h3 style="font-size: 20px;">Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p style="font-size: 15px; margin-top: 4px;">DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+      <div style="height: 3px; width: 140px; background: var(--accent); margin: 15px auto;"></div>
+    </div>
+    <div class="slide-body" style="text-align: center; align-items: center;">
+      <h1 style="font-size: 38px; color: var(--primary); font-weight: 800; line-height: 1.1;">SMART IOT WEATHER STATION</h1>
+      <p style="font-size: 18px; color: var(--teal); font-weight: 600; margin-top: 10px;">
+        Real-Time Microclimate Monitoring with ESP32, DHT22, SSD1306 & Cloud Analytics
+      </p>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 20px 40px; background: #f8fafc; border-radius: 10px;">
+      <div>
+        <h4 style="color: var(--maroon); font-size: 15px; margin-bottom: 4px;">MENTOR:</h4>
+        <p style="font-size: 14px; font-weight: 600; color: #1e293b;">[Faculty Mentor Name]</p>
+        <p style="font-size: 12px; color: #64748b;">Department of ECE, GCET</p>
+      </div>
+      <div>
+        <h4 style="color: var(--primary); font-size: 15px; margin-bottom: 4px;">PRESENTED BY:</h4>
+        <p style="font-size: 14px; color: #1e293b;">1. <strong>Prasoon</strong> (Roll No: ________________)</p>
+        <p style="font-size: 14px; color: #1e293b;">2. <strong>Team Member 2</strong> (Roll No: ________________)</p>
+        <p style="font-size: 14px; color: #1e293b;">3. <strong>Team Member 3</strong> (Roll No: ________________)</p>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Galgotias College of Engineering & Technology</span>
+      <span>Slide 1 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header">
+      <h3>Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+    </div>
+    <div class="slide-title">CONTENTS</div>
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="card" style="border-left: 4px solid var(--primary);"><div class="card-title">❖ 01. Introduction</div><div class="card-text">Overview of atmospheric monitoring, modern IoT architectures and edge computing.</div></div>
+        <div class="card" style="border-left: 4px solid var(--teal);"><div class="card-title">❖ 02. Motivation</div><div class="card-text">Why microclimate tracking, human comfort indices and localized sensing are crucial.</div></div>
+        <div class="card" style="border-left: 4px solid var(--accent);"><div class="card-title">❖ 03. Objectives</div><div class="card-text">Key project deliverables, hardware interfacing, and real-time cloud analytics goals.</div></div>
+        <div class="card" style="border-left: 4px solid var(--maroon);"><div class="card-title">❖ 04. System Description (Hardware)</div><div class="card-text">ESP32 pin mapping, DHT22 sensor, SSD1306 OLED and schematic connection scheme.</div></div>
+        <div class="card" style="border-left: 4px solid var(--primary);"><div class="card-title">❖ 05. Software & Cloud Stack</div><div class="card-text">Embedded firmware, MathWorks ThingSpeak API pipeline and Vercel dashboard.</div></div>
+        <div class="card" style="border-left: 4px solid var(--teal);"><div class="card-title">❖ 06. Results & Discussion</div><div class="card-text">Live sensor validation, 24-hour graphical trend chart, extremes computation and links.</div></div>
+        <div class="card" style="border-left: 4px solid var(--accent);"><div class="card-title">❖ 07. Conclusion & Future Scope</div><div class="card-text">Summary of achievements, sensor modularity, solar battery harvesting, and alerts.</div></div>
+        <div class="card" style="border-left: 4px solid var(--maroon);"><div class="card-title">❖ 08. References</div><div class="card-text">IEEE transactions, official component datasheets, and published IoT research.</div></div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Smart IoT Weather Station</span>
+      <span>Slide 2 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header">
+      <h3>Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+    </div>
+    <div class="slide-title">INTRODUCTION</div>
+    <div class="slide-body">
+      <div class="bullet-point">
+        <span class="bullet-icon">•</span>
+        <div><strong>Urbanization & Microclimate Shifts:</strong> Localized meteorological variations significantly impact human health, agricultural yields, industrial workspaces, and smart city infrastructure.</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">•</span>
+        <div><strong>Limitations of Conventional Stations:</strong> Traditional weather monitoring setups are bulky, expensive, lack cloud accessibility, and provide low temporal resolution with noticeable reporting lag.</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">•</span>
+        <div><strong>The Role of IoT & Embedded Systems:</strong> Internet of Things (IoT) enables distributed, low-power, and compact sensing nodes that capture environmental parameters autonomously in real time.</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">•</span>
+        <div><strong>Core Implementation Technology:</strong> Utilizing the dual-core ESP32 microcontroller with integrated 2.4 GHz Wi-Fi to acquire high-precision temperature and humidity readings from a DHT22 sensor.</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">•</span>
+        <div><strong>Edge & Cloud Synergy:</strong> Sensor telemetry is simultaneously rendered locally on an I2C SSD1306 OLED display for immediate observation and pushed to ThingSpeak IoT Cloud for remote web analytics.</div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Smart IoT Weather Station</span>
+      <span>Slide 3 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header">
+      <h3>Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+    </div>
+    <div class="slide-title">OBJECTIVES</div>
+    <div class="slide-body">
+      <div class="bullet-point">
+        <span class="bullet-icon">✔</span>
+        <div><strong>Autonomous Embedded Station:</strong> To design and fabricate an autonomous, low-power IoT Weather Monitoring Station using the ESP32 microcontroller.</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">✔</span>
+        <div><strong>High-Precision Atmospheric Sensing:</strong> To interface a calibrated DHT22 (AM2302) sensor to measure temperature (±0.5°C) and relative humidity (±2%).</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">✔</span>
+        <div><strong>Local Visual Feedback:</strong> To establish high-speed I2C communication with an SSD1306 0.96" OLED display for real-time edge telemetry readout.</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">✔</span>
+        <div><strong>Comfort Index Computation:</strong> To calculate Heat Index (Steadman formula) and Dew Point (Magnus formula) directly on-device.</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">✔</span>
+        <div><strong>Cloud Telemetry Pipeline:</strong> To push sensor telemetry every 20 seconds to MathWorks ThingSpeak IoT Cloud via RESTful HTTP API.</div>
+      </div>
+      <div class="bullet-point">
+        <span class="bullet-icon">✔</span>
+        <div><strong>Serverless Global Dashboard:</strong> To build and host a responsive web application on Vercel featuring 24-hour dynamic HTML5 canvas trend graphs.</div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Smart IoT Weather Station</span>
+      <span>Slide 4 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header">
+      <h3>Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+    </div>
+    <div class="slide-title">DESCRIPTION: HARDWARE ARCHITECTURE</div>
+    <div class="slide-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Technical Specification</th>
+            <th>Pin Interface</th>
+            <th>Role in System</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ESP32 Dev Board</strong></td>
+            <td>Xtensa Dual-Core 32-bit, 240MHz, 2.4GHz 802.11 b/g/n Wi-Fi</td>
+            <td>Micro-USB / 3.3V</td>
+            <td>Master controller, data computation & HTTP client</td>
+          </tr>
+          <tr>
+            <td><strong>DHT22 (AM2302)</strong></td>
+            <td>-40 to 80°C (±0.5°C), 0 to 100% RH (±2%), 0.5Hz rate</td>
+            <td>GPIO 4 (Digital 1-wire)</td>
+            <td>Precision temperature and relative humidity acquisition</td>
+          </tr>
+          <tr>
+            <td><strong>SSD1306 OLED</strong></td>
+            <td>0.96" Monochrome 128x64 pixels, I2C protocol</td>
+            <td>SDA: GPIO 21, SCL: GPIO 22</td>
+            <td>Real-time edge telemetry display and connection indicator</td>
+          </tr>
+          <tr>
+            <td><strong>Power Source</strong></td>
+            <td>5V DC via USB / Mobile Hotspot Tethering</td>
+            <td>VIN / 3.3V LDO</td>
+            <td>Supplies regulated power to MCU, sensor, and display</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card" style="margin-top: 10px; border-left: 4px solid var(--teal);">
+        <div class="card-title" style="color: var(--teal);">PIN INTERCONNECTION SCHEME</div>
+        <div class="card-text">
+          <strong>• DHT22:</strong> VCC ➜ 3.3V | DATA ➜ GPIO 4 (10kΩ pull-up) | GND ➜ GND<br>
+          <strong>• SSD1306 OLED:</strong> VCC ➜ 3.3V | GND ➜ GND | SDA ➜ GPIO 21 | SCL ➜ GPIO 22<br>
+          <strong>• System Flow:</strong> DHT22 ➜ ESP32 (Local Math) ➜ OLED Screen + Wi-Fi HTTP POST ➜ ThingSpeak Cloud ➜ Vercel Web Dashboard
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Smart IoT Weather Station</span>
+      <span>Slide 5 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header">
+      <h3>Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+    </div>
+    <div class="slide-title">DESCRIPTION: SOFTWARE & CLOUD STACK</div>
+    <div class="slide-body">
+      <div class="grid-3">
+        <div class="card" style="border-top: 4px solid var(--primary);">
+          <div class="card-title">ESP32 Firmware</div>
+          <div class="card-text">
+            • Written in C++ (PlatformIO / Arduino).<br><br>
+            • Reads DHT22 sensor via Adafruit Sensor Unified library.<br><br>
+            • Calculates Heat Index and Dew Point on-chip.<br><br>
+            • Drives OLED via Adafruit_SSD1306.<br><br>
+            • Pushes telemetry to ThingSpeak every 20 seconds.
+          </div>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--teal);">
+          <div class="card-title">ThingSpeak IoT Cloud</div>
+          <div class="card-text">
+            • Channel ID: <strong>3531601</strong> (Public access).<br><br>
+            • <strong>Field 1:</strong> Temperature (°C)<br>
+            • <strong>Field 2:</strong> Humidity (%)<br>
+            • <strong>Field 3:</strong> Heat Index (°C)<br>
+            • <strong>Field 4:</strong> Dew Point (°C)<br><br>
+            • Timestamped cloud storage and REST API.
+          </div>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--accent);">
+          <div class="card-title">Frontend Dashboard</div>
+          <div class="card-text">
+            • Built with Vanilla HTML5, CSS3 & ES6 JS (Zero npm dependencies).<br><br>
+            • Live polling every 2s via fetch() API.<br><br>
+            • Custom HTML5 Canvas 2D charting of last 48 readings (~24 hours).<br><br>
+            • Dynamic Min/Max extremes detection.<br><br>
+            • Deployed on Vercel CDN globally.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Smart IoT Weather Station</span>
+      <span>Slide 6 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header">
+      <h3>Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+    </div>
+    <div class="slide-title">RESULTS & REAL-TIME VERIFICATION</div>
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="card" style="border-left: 4px solid var(--primary);">
+          <div class="card-title">Live Sensor Telemetry Snapshot</div>
+          <div class="card-text" style="font-size: 14px; line-height: 1.8;">
+            • <strong>Ambient Temperature:</strong> 26.8 °C (Calibrated DHT22)<br>
+            • <strong>Relative Humidity:</strong> 69.8 %<br>
+            • <strong>Heat Index (Perceived):</strong> 28.5 °C<br>
+            • <strong>Dew Point (Condensation):</strong> 20.8 °C<br>
+            • <strong>Cloud Upload Cycle:</strong> Every 20 seconds<br>
+            • <strong>Client Web Polling:</strong> Every 2 seconds<br>
+            • <strong>Status:</strong> Active & Streaming
+          </div>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--teal);">
+          <div class="card-title">Dashboard & Cloud Verification</div>
+          <div class="card-text" style="font-size: 14px; line-height: 1.8;">
+            • <strong>24-Hour Trend Visualizer:</strong> Dual-trace smoothed spline chart (Coral for temp, Teal for humidity).<br>
+            • <strong>Automated Extremes:</strong> Dynamically calculates session Low & High ranges.<br>
+            • <strong>Fallback Resilience:</strong> Clear visual notification if connection to ESP32 drops.<br>
+            • <strong>🌐 Live Link:</strong> <a href="https://smart-weather-station.vercel.app/" target="_blank" style="color: var(--teal); font-weight: 600;">smart-weather-station.vercel.app</a><br>
+            • <strong>📦 GitHub:</strong> <a href="https://github.com/prasoon9999/smart-weather-station" target="_blank" style="color: var(--primary); font-weight: 600;">prasoon9999/smart-weather-station</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Smart IoT Weather Station</span>
+      <span>Slide 7 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header">
+      <h3>Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+    </div>
+    <div class="slide-title">CONCLUSION & FUTURE SCOPE</div>
+    <div class="slide-body">
+      <div class="card" style="border-left: 4px solid var(--primary); margin-bottom: 8px;">
+        <div class="card-title">CONCLUSION</div>
+        <div class="card-text" style="font-size: 14px; line-height: 1.6;">
+          • Successfully designed and deployed an end-to-end IoT Weather Station combining edge sensing with cloud computing.<br>
+          • The DHT22 sensor and ESP32 demonstrated stable, accurate telemetry acquisition with local OLED visualization and cloud transmission.<br>
+          • The serverless web dashboard deployed on Vercel delivers seamless, responsive real-time graphical monitoring accessible globally from any web browser without installation.
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--accent);">
+        <div class="card-title" style="color: var(--accent);">FUTURE SCOPE</div>
+        <div class="card-text" style="font-size: 14px; line-height: 1.6;">
+          • <strong>Multi-Sensor Expansion:</strong> Integration of BMP280/BME280 for barometric pressure, rain gauge, and UV index detection.<br>
+          • <strong>Energy Harvesting:</strong> Solar panel and TP4056 Li-ion battery charging circuit with ESP32 deep-sleep modes for off-grid field deployment.<br>
+          • <strong>Automated Alerts:</strong> Implementation of Telegram / SMS / Email Webhook triggers for severe weather warnings and heat stress alarms.<br>
+          • <strong>Predictive Analytics:</strong> Applying machine learning models on stored ThingSpeak feeds to forecast localized rain and temperature patterns.
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Smart IoT Weather Station</span>
+      <span>Slide 8 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide">
+    <div class="slide-top-bar"></div>
+    <div class="college-header">
+      <h3>Galgotias College of Engineering & Technology, Greater Noida</h3>
+      <p>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</p>
+    </div>
+    <div class="slide-title">REFERENCES</div>
+    <div class="slide-body">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 70px;">S. No.</th>
+            <th>Research Paper / Datasheet / Technical Standard</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center;"><strong>1.</strong></td>
+            <td>Espressif Systems, "ESP32 Series Datasheet - 2.4 GHz Wi-Fi and Bluetooth combo chip," Espressif Inc., Version 3.9, 2023.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>2.</strong></td>
+            <td>Aosong Electronics Co., Ltd., "Digital-output relative humidity & temperature sensor/module DHT22 (AM2302) Datasheet," Guangzhou, China.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>3.</strong></td>
+            <td>K. S. Rao, V. S. Murthy, and T. P. Rao, "IoT Based Real-Time Environmental and Weather Monitoring System using ESP32," IEEE International Conference on Smart Technologies, 2021.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>4.</strong></td>
+            <td>MathWorks, "ThingSpeak Documentation: IoT Analytics with MATLAB Support and RESTful Web Services API," MathWorks Inc., 2024.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>5.</strong></td>
+            <td>N. H. Motlagh, M. Mohammadrezaei, J. Hunt, and B. Zakeri, "Internet of Things (IoT) for Climate Change and Weather Monitoring: Recent Advances and Applications," IEEE Access, vol. 8, pp. 62890-62908, 2020.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>6.</strong></td>
+            <td>Solomon Systech, "SSD1306 128 x 64 Dot Matrix OLED/PLED Driver with Controller Datasheet," Rev 1.1, 2018.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide-footer">
+      <span>Smart IoT Weather Station</span>
+      <span>Slide 9 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide" style="text-align: center; justify-content: center; gap: 30px;">
+    <div class="slide-top-bar"></div>
+    <div>
+      <h1 style="font-size: 56px; color: var(--primary); font-weight: 800; letter-spacing: 1px;">THANK YOU</h1>
+      <p style="font-size: 24px; color: var(--accent); font-weight: 600; margin-top: 10px;">Questions & Discussion</p>
+    </div>
+    <div style="background: #f8fafc; padding: 25px 40px; border-radius: 12px; display: inline-block; margin: 0 auto; border: 1px solid #e2e8f0;">
+      <p style="font-size: 15px; color: #334155; margin-bottom: 8px;">
+        🌐 <strong>Live Project Website:</strong> 
+        <a href="https://smart-weather-station.vercel.app/" target="_blank" style="color: var(--teal); font-weight: 600; text-decoration: none;">
+          smart-weather-station.vercel.app
+        </a>
+      </p>
+      <p style="font-size: 15px; color: #334155;">
+        📦 <strong>Source Code & Slides on GitHub:</strong> 
+        <a href="https://github.com/prasoon9999/smart-weather-station" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: none;">
+          github.com/prasoon9999/smart-weather-station
+        </a>
+      </p>
+    </div>
+    <div class="slide-footer">
+      <span>Galgotias College of Engineering & Technology · ECE Department</span>
+      <span>Slide 10 / 10</span>
+    </div>
+  </div>
+
+</body>
+</html>
