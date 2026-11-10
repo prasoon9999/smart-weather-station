@@ -83,7 +83,7 @@ npx serve .
    - Field 4 → Dew Point (°C)
 2. Copy the **Channel ID** from the ThingSpeak dashboard.
 3. Open `app.js` and set `thingSpeakChannelId` to your Channel ID.
-4. In the ESP32 firmware (`firmware/main.cpp`), fill in:
+4. In your local ESP32 PlatformIO firmware project, fill in:
    - Your phone hotspot SSID and password
    - Your ThingSpeak **write API key**
 5. Flash the firmware while your hotspot is active.
@@ -101,8 +101,7 @@ smart-weather-station/
 ├── style.css       — All styles (Manrope + DM Mono)
 ├── app.js          — Data fetching, chart, live updates
 ├── package.json    — Metadata (no runtime dependencies)
-├── README.md       — This file
-└── firmware/       — ESP32 PlatformIO project (main.cpp)
+└── README.md       — This file
 ```
 
 ---
